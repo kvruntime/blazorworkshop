@@ -1,0 +1,56 @@
+﻿@page "/Account/Login"
+
+
+@inject AuthenicationUseCase authUseCase
+@inject NavigationManager NavManager
+
+<section>
+  <div class="row">
+    <div class="col-6">
+      <h3>Login </h3>
+      <EditForm Model=@LoginDto FormName="login" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div>
+          <label for="username" class="from-label">Username</label>
+          <InputText @bind-Value="LoginDto.Username" placeholder="Username" class="form-control" />
+        </div>
+        <div>
+          <label for="password" class="from-label">Password</label>
+          <InputText @bind-Value="LoginDto.Password" placeholder="Password" class="form-control" type="password"
+            current-password />
+        </div>
+        <div class="my-3">
+          <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+      </EditForm>
+    </div>
+    <p>Don't have account, please <NavLink href="/Account/Register">Create one</NavLink>
+    </p>
+  </div>
+  @if (!String.IsNullOrWhiteSpace(authMessage))
+  {
+    <p class="alert alert-danger">@authMessage</p>
+  }
+</section>
+
+@code {
+  [SupplyParameterFromForm(FormName = "login")] public LoginDto LoginDto { get; set; } = new();
+  [CascadingParameter] public HttpContext? httpContext { get; set; }
+  string authMessage = string.Empty;
+  async Task Submit()
+  {
+
+    @* TOD0:check for input *@
+    (string message, ClaimsPrincipal? principal) = await authUseCase.Login(LoginDto,
+    CookieAuthenticationDefaults.AuthenticationScheme);
+    if (principal is null)
+    {
+      authMessage = message;
+      return;
+    }
+    await httpContext?.SignInAsync(principal);
+    NavManager.NavigateTo("/");
+
+  }
+}

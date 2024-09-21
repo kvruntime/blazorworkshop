@@ -1,0 +1,60 @@
+﻿@page "/Account/Register"
+@rendermode InteractiveServer
+
+@inject AuthenicationUseCase authUseCase
+@inject NavigationManager NavManager
+
+
+<section>
+  <div class="row">
+    <div class="col-6">
+      <h3>Register </h3>
+      <EditForm Model=@RegisterDto FormName="register" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div>
+          <label for="username" class="from-label">Username</label>
+          <InputText @bind-Value="RegisterDto.Username" placeholder="Username" class="form-control" />
+        </div>
+        <div>
+          <label for="email" class="from-label">Email</label>
+          <InputText @bind-Value="RegisterDto.Email" placeholder="Email" class="form-control" type="email" />
+        </div>
+        <div>
+          <label for="password" class="from-label">Password</label>
+          <InputText @bind-Value="RegisterDto.Password" placeholder="Password" class="form-control" type="password" />
+        </div>
+        <div>
+          <label for="confirmpassword" class="from-label">Confirm Password</label>
+          <InputText @bind-Value="RegisterDto.ConfirmPassword" placeholder="Password" class="form-control"
+            type="password" />
+        </div>
+        <div class="my-3">
+          <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+      </EditForm>
+    </div>
+    <p>Already have account, please <NavLink href="/Account/Login">Login</NavLink>
+    </p>
+  </div>
+  @if (!String.IsNullOrEmpty(authMessage))
+  {
+    <p class="alert alert-danger">@authMessage</p>
+  }
+</section>
+
+@code {
+  [SupplyParameterFromForm(FormName = "register")] public RegisterDto RegisterDto { get; set; } = new();
+  string authMessage = string.Empty;
+  async Task Submit()
+  {
+    (string message, bool created) = await authUseCase.Register(RegisterDto);
+
+    if (created) NavManager.NavigateTo("/Account/Login");
+    else
+    {
+      authMessage = message;
+    }
+
+  }
+}
