@@ -6,7 +6,14 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
+        <div class="top-row px-4 d-flex flex-row justify-content-end gap-3">
+            <AuthorizeView>
+                <NotAuthorized></NotAuthorized>
+                <Authorized>
+                    <NavLink href="/Account/UserInfo">@context.User?.Identity?.Name</NavLink>
+                    <NavLink href="/Account/Logout">Logout</NavLink>
+                </Authorized>
+            </AuthorizeView>
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
 
@@ -14,7 +21,9 @@
             @Body
         </article>
     </main>
+
 </div>
+    <footer>application footer</footer>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.

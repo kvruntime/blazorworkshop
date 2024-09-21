@@ -22,8 +22,8 @@
                     </NavLink>
                 </NotAuthorized>
                 <Authorized>
-                    <NavLink class="nav-link" href="/Account/Logout">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Logout
+                    <NavLink class="nav-link" href="/Account/UserInfo">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @context.User?.Identity?.Name
                     </NavLink>
                 </Authorized>
             </AuthorizeView>
