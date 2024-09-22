@@ -15,5 +15,7 @@ namespace CoreBusiness.Entities
         public string Email { get; set; }
         [Column("password")]
         public string Password { get; set; }
+        [Column(name: "user_profile__url")]
+        public string? ProfileUrl { get; set; }
     }
 }

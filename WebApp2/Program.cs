@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WebApp2.Components;
 using WebApp2.Data;
@@ -22,6 +23,7 @@ builder.Services.AddCascadingAuthenticationState();
 var connectionString = builder.Configuration["ConnectionString"] ?? throw new NullReferenceException("Missing connnection string");
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connectionString));
 builder.Services.AddScoped<AuthenicationUseCase>();
+// builder.Services.AddScoped<AuthenticationStateProvider>();
 
 
 var app = builder.Build();

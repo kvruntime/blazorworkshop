@@ -1,32 +1,44 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="flex flex-column min-h-screen m-1 overflow-x-hidden">
+    <NavMenu />
 
-    <main>
-        <div class="top-row px-4 d-flex flex-row justify-content-end gap-3">
-            <AuthorizeView>
-                <NotAuthorized></NotAuthorized>
-                <Authorized>
-                    <NavLink href="/Account/UserInfo">@context.User?.Identity?.Name</NavLink>
-                    <NavLink href="/Account/Logout">Logout</NavLink>
-                </Authorized>
-            </AuthorizeView>
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+    <main class="grow my-2">
+        @Body
     </main>
 
+    <footer class="flex flex-column justify-center items-center bg-slate-200 py-2">
+        <div>
+            <p>application footer &copy;@(DateTime.UtcNow.Year)</p>
+        </div>
+        <div class="flex flex-row justify-around items-center gap-2 ">
+            @foreach (var link in links)
+            {
+                <span>
+                    <NavLink href=@link.Key>
+                        @link.Key
+                    </NavLink>
+                </span>
+            }
+        </div>
+    </footer>
 </div>
-    <footer>application footer</footer>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    Icon icon = new Icons.Regular.Size24.HomeAdd();
+    Dictionary<string, object> links = new() {
+{"http://linkedin.com", new Icons.Regular.Size28.PersonHome()},
+{"http://google.com", new Icons.Regular.Size28.WeatherMoon()}
+};
+
+    Dictionary<string, string> footerLinks = new() {
+{"facebook", "http://facebook.com" },
+{"google", "http://google.com" },
+};
+}

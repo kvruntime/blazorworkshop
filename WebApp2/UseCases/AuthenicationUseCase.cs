@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 
 using WebApp2.Data;
@@ -50,5 +51,15 @@ namespace WebApp2.UseCases
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
             return ("success", principal);
         }
+
+        public async Task UpdateUserProfile(string username, string profileUrl)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user is null) return;
+            user.ProfileUrl = profileUrl;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<User> GetCurrentUser(string username) => await _context.Users.FirstAsync(u => u.Username == username);
     }
 }

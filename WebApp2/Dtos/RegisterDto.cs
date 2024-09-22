@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+using WebApp2.Dtos;
 
 
 namespace WebApp2.Dtos
