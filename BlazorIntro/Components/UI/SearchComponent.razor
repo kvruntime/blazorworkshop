@@ -1,0 +1,31 @@
+<section class="p-2 bg-info rounded-r my-2">
+  <div class="">
+    <div class="my-3">
+      <label for="" class="form-label">@searchResult</label>
+      <input type="search" placeholder="Search data here..."
+       @bind="@searchText" @bind:event="oninput" class="form-control" @bind:after="PerformSearch">
+    </div>
+
+    <ul class="list-group">
+    @foreach(var r in filterdResult)
+    {
+      <li class="list-group-item">@r</li>
+    }
+    </ul>
+  </div>
+</section>
+
+@code {
+  List<string> data = new() { 
+    "Amount", "Data","User", "Perform", "Action", "Search", "Another","One"
+  };
+  List<string> filterdResult = new();
+  string searchText = string.Empty;
+  string searchResult = string.Empty;
+  void PerformSearch() {
+    searchResult = $"Search for: {searchText}";
+    var _result=data.Select(d=>d.ToLower()).Where(d => d.Contains(searchText.ToLower())).ToList();
+    filterdResult = _result.Count() > 0 ? _result : new();
+  }
+
+}

@@ -1,0 +1,36 @@
+@using System.Text.Json;
+<div>
+  <h2>Our pizza section</h2>
+  @foreach (Pizza pizza in Pizzas)
+  {
+    <div class="row py-2">
+      <div class="col">
+        @pizza.Name
+      </div>
+      <div class="col text-right">
+        @($"{pizza.Price:0.00}")
+      </div>
+      <div class="col"></div>
+      <div class="col">
+        <img src="@SpicinessImage(pizza.Spiciness)" alt="@pizza.Spiciness"
+        style="height: 40px; object-fit: contain; width: 100%;" />
+      </div>
+      <div class="col">
+        <button class="btn btn-success pl-4 pr-4" @onclick=@(async () => await Selected.InvokeAsync(pizza))>
+          Add
+        </button>
+      </div>
+    </div>
+  }
+
+  @* <p>@(JsonSerializer.Serialize<Pizza[]>(Pizzas, new JsonSerializerOptions() { WriteIndented = true })) )</p> *@
+</div>
+
+@code {
+  [Parameter][EditorRequired] public Pizza[] Pizzas { get; set; } = [];
+
+  string SpicinessImage(Spiciness spiciness) => Assets[$"images/{spiciness.ToString().ToLower()}.png"];
+  [Parameter] public EventCallback<Pizza> Selected { get; set; }
+} 
+
+

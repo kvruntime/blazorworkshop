@@ -1,0 +1,71 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@inject ILogger<Home> _logger
+
+
+<PageTitle>Home</PageTitle>
+
+<div>
+
+
+  <div>
+    <h3>Informations Toggler</h3>
+    <button class="@backgroundColor" @onpointerdown="ToogleShowAlert">Toogle</button>
+    <button class="btn btn-primary" @onpointerdown="DismissAlert">Dismiss</button>
+    <Delay Tick="@ToogleShowAlert" TimeInSeconds="3" />
+    <InformationToggler @bind-ShowInfo=@showInfo>
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci vero laudantium a, excepturi id tempora
+        officia dolorem libero aut quibusdam!
+      </p>
+    </InformationToggler>
+  </div>
+  <br />
+  <ErrorBoundary>
+    <TwowaysData />
+  </ErrorBoundary>
+
+  <div>
+    <h3>Search Component</h3>
+    <SearchComponent />
+  </div>
+
+  <div>
+    <h2>Dismissible Alert (@ShowAlert)</h2>
+    <button class="btn btn-info" @onpointerdown="ToogleAlert">Show Alert</button>
+    <Delay Tick="ToogleAlert" TimeInSeconds="4" />
+    <DismissibleAlert @bind-Show="@ShowAlert">
+      <strong>Blazor is soooo cool...</strong>
+    </DismissibleAlert>
+  </div>
+
+  <div>
+    <h3>Form Component</h3>
+    <FormComponent Member="member" />
+  </div>
+
+</div>
+@code {
+  bool showInfo = true;
+  bool ShowAlert = true;
+  void ToogleAlert() => ShowAlert = !ShowAlert;
+  InformationToggler _informationToggler = default!;
+  string backgroundColor => showInfo ? "opened-background" : "closed-background";
+  private void ToogleShowAlert()
+  {
+    _logger.LogInformation("Toggling informations...");
+    showInfo = !showInfo;
+  }
+  void CalledTick() => Console.WriteLine("CalledTick");
+  async Task DismissAlert() => await _informationToggler.Dismiss();
+
+  @* Form *@
+  Member member = new()
+    {
+      Name = string.Empty,
+      Email = string.Empty,
+      Password = string.Empty,
+      Country = ""
+    };
+}

@@ -1,0 +1,37 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject IMenuService MenuService
+@inject IOrderService OrderService
+
+<PageTitle>Home</PageTitle>
+
+<div>
+  <h1>Hello, world!</h1>
+  <Menu Pizzas="state.Pizzas" Selected="AddPizzaToBasket" />
+  <Basket @bind-State="@state" />
+  <CustomerEntry Title="CustomerEntry" @bind-Customer="state.Customer" SubmitTitle="Place Order"
+  SubmitClicked="PlaceOrder" />
+</div>
+
+@code {
+
+  protected override async Task OnInitializedAsync()
+  {
+    await base.OnInitializedAsync();
+    @* state.Pizzas = await MenuService.GetMenu(); *@
+  }
+  protected override async Task OnParametersSetAsync()
+  {
+    await base.OnParametersSetAsync();
+    state.Pizzas = await MenuService.GetMenu();
+  }
+
+
+  State state { get; set; } = new();
+
+  void AddPizzaToBasket(Pizza pizza) { state.Basket.Add(pizza.Id); }
+  async Task PlaceOrder()
+  {
+    await OrderService.PlaceOrder(state.Customer, state.Basket);
+  }
+}

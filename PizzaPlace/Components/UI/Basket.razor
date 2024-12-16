@@ -1,0 +1,55 @@
+<div >
+  @if (State.Basket.Orders.Any())
+  {
+    <h1 class="">Your current order</h1>
+    @foreach (var (pizza, pos) in GetPizzas())
+    {
+      <div class="row mb-2 max-h-20" style="max-height: 300px; overflow-y: scroll;">
+        <div class="col">
+          @pizza!.Name
+        </div>
+        <div class="col text-right">
+          @($"{pizza.Price:0.00}")
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+          <button class="btn btn-danger" @onclick="@(async ()=> await RemoveFromBasket(pos))">
+            Remove
+          </button>
+        </div>
+      </div>
+    }
+
+  }
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <hr />
+    </div>
+    <div class="col"> </div>
+    <div class="col"> </div>
+  </div>
+  <div class="row">
+    <div class="col"> Total:</div>
+    <div class="col text-right font-weight-bold">
+      @($"{State.TotalPrice:0.00}")
+    </div>
+    <div class="col"> </div>
+    <div class="col"> </div>
+    <div class="col"> </div>
+  </div>
+</div>
+
+
+@code {
+  [Parameter][EditorRequired] public required State State { get; set; }
+  [Parameter]public required EventCallback<State> StateChanged { get; set; }
+  IEnumerable<(Pizza pizza, int pos)> GetPizzas()
+  => State.Basket.Orders.Select((id, pos) => (State.GetPizza(id), pos));
+  async ValueTask RemoveFromBasket(int pos)
+  {
+    State.Basket.RemoveAt(pos);
+    await StateChanged.InvokeAsync(State);
+  }
+}

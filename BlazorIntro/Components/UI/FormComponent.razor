@@ -1,0 +1,111 @@
+@* <div>
+<h4>Sample HTML Form</h4>
+<form action="submit_form" method="post">
+<label for="name">Name:</label>
+<input type="text" id="name" name="name"><br><br>
+<label for="email">Email:</label>
+<input type="email" id="email" name="email"><br><br>
+<label for="password">Password:</label>
+<input type="password" id="password" name="password"><br><br>
+<label for="message">Message:</label>
+<label for="country">Country:</label>
+<select id="country" name="country">
+<option value="us">United States</option>
+<option value="ca">Canada</option>
+<option value="uk">United Kingdom</option>
+</select><br><br>
+<label>
+<input type="checkbox" name="subscribe" value="newsletter">
+Subscribe to newsletter
+</label><br><br>
+<label>
+<input type="radio" name="gender" value="male">
+Male
+</label>
+<label>
+<input type="radio" name="gender" value="female">
+Female
+</label><br><br>
+<input type="submit" value="Submit">
+</form>
+
+</div> *@
+
+
+<div class="my-3">
+  <EditForm FormName="member-form" Model="@Member" OnValidSubmit="@(()=>Sumbit())">
+    <div class="form-group row mb-1">
+      <label class="col-sm-3 col-form-label" for="Name">Name:</label>
+      <div class="col-sm-9">
+        <InputText class="form-control" @bind-Value="Member.Name" />
+        <ValidationMessage For="@(()=>Member.Name)"/>
+      </div>
+    </div>
+    <div class="form-group row mb-1">
+<label class="col-sm-3 col-form-label"
+for="Email">Email:</label>
+      <div class="col-sm-9">
+        <InputText type="email" class="form-control" formnovalidate @bind-Value="Member.Email" />
+      </div>
+    </div>
+    <div class="form-group row mb-1">
+      <label class="col-sm-3 col-form-label" for="Password">Password:</label>
+      <div class="col-sm-9">
+        <InputText type="password" class="form-control" @bind-Value="Member.Password" />
+      </div>
+    </div>
+    <div class="form-group row mb-1">
+      <label class="col-sm-3 col-form-label" for="Message">Message:</label>
+      <div class="col-sm-9">
+        <InputTextArea class="form-control" @bind-Value="Member.Message" />
+      </div>
+    </div>
+    <div class="form-group row mb-1">
+      <label class="col-sm-3 col-form-label" for="Country">Country:</label>
+      <div class="col-sm-9">
+        <InputSelect class="form-control" @bind-Value="Member.Country">
+          @foreach (var country in Countries.All)
+          {
+            <option value="@country.Key">
+              @country.Value
+            </option>
+          }
+        </InputSelect>
+      </div>
+    </div>
+    <div class="form-group row mb-1">
+      <label class="col-sm-3 col-form-label" for="Subscriber">Subscribe:</label>
+      <div class="col-sm-9">
+        <InputCheckbox class="form-check-input" @bind-Value="Member.Subscriber" />
+      </div>
+    </div>
+    <div class="form-group row mb-1">
+      <label class="col-sm-3 col-form-label" for="Gender">Gender:</label>
+      <div class="col-sm-9">
+        <InputRadioGroup Name="Gender" @bind-Value="Member.Gender">
+          @foreach (Gender gender in Enum.GetValues<Gender>())
+          {
+            <InputRadio class="form-check-input" Name="Gender" Value="@gender" />
+            <label class="form-check-label">@gender</label>
+          }
+        </InputRadioGroup>
+      </div>
+    </div>
+    <div class="form-group mb-0">
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </div>
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+  </EditForm>
+</div>
+
+@code {
+  [Parameter][EditorRequired] public required Member Member { get; set; }
+
+  void Sumbit()
+  {
+    Console.WriteLine("Submit");
+  }
+}

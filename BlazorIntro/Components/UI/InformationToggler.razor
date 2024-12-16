@@ -1,0 +1,21 @@
+﻿@* @rendermode InteractiveServer *@
+
+<div>
+  @if (ShowInfo == true)
+  {
+    <div class="alert alert-primary">
+      <strong>@ChildContent</strong>
+    </div>
+  }
+</div>
+
+@code {
+  [Parameter][EditorRequired] public RenderFragment ChildContent { get; set; }
+  [Parameter][EditorRequired] public bool ShowInfo { get; set; } = true;
+  [Parameter]public required EventCallback<bool> ShowInfoChanged{ get; set; }
+  async Task UpdateShow(bool value){
+    if (value != ShowInfo)
+      await ShowInfoChanged.InvokeAsync(value);
+  }
+  public async Task Dismiss() => await UpdateShow(false);
+}
