@@ -1,0 +1,12 @@
+<div class="p-3 bg-secondary">
+  <input type="text" class="form-control" @bind-value="username" @bind-value:event="oninput"
+  @onkeypress="@((KeyboardEventArgs e)=>Console.WriteLine(e.ToString()))"
+  >
+  <label class="py-2 "><span>Username: </span><span class="bg-success">@username</span></label>
+  @* <input disabled @bind-value="today" @bind:format="yyyy-MM-dd hh:mm:bg-success"/> *@
+</div>
+@code{
+  string username = string.Empty;
+  DateTime today = DateTime.UtcNow;
+
+}

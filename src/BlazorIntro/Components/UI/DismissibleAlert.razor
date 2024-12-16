@@ -1,0 +1,20 @@
+@if (Show)
+{
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    @ChildContent
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="Dismiss">
+    </button>
+  </div>
+}
+
+@code {
+  [Parameter] public bool Show { get; set; }
+  [Parameter][EditorRequired] public RenderFragment ChildContent { get; set; }
+  [Parameter] public required EventCallback<bool> ShowChanged { get; set; }
+  public async Task Dismiss() => await UpdateShow(false);
+  async Task UpdateShow(bool value)
+  {
+    if (value != Show)
+      await ShowChanged.InvokeAsync(value);
+  }
+}

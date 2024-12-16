@@ -1,0 +1,21 @@
+@page "/auth/profile"
+@attribute [Authorize]
+
+<section>
+  <h3>Profile</h3>
+  <AuthorizeView>
+    <Authorized>
+      <div>
+        <h3>Hello</h3>
+        <p>@context.User.Identity?.Name</p>
+        <NavLink href="/auth/logout" class="btn btn-danger">Logout</NavLink>
+      </div>
+    </Authorized>
+    <NotAuthorized>
+      <span>Go Checking elsewhere</span>
+    </NotAuthorized>
+    <Authorizing>
+      <span>Checking...</span>
+    </Authorizing>
+  </AuthorizeView>
+</section>
