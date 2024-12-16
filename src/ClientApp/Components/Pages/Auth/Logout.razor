@@ -1,0 +1,16 @@
+@page "/auth/logout"
+@rendermode InteractiveServer
+@* @inject NavigationManager NavManager *@
+
+@code{
+  private readonly NavigationManager _navManager;
+  public Logout(NavigationManager navManager){
+    _navManager = navManager;
+  }
+  [CascadingParameter] public HttpContext context { get; set; } = default!;
+  protected override async Task OnInitializedAsync()
+  {
+    await context.SignOutAsync(Utilities.authScheme);
+    _navManager.NavigateTo("/", replace: true);
+  }
+}

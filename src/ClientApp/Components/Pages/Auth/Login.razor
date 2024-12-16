@@ -1,0 +1,55 @@
+@page "/auth/login"
+@inject NavigationManager NavigationManager
+
+<div class="row">
+  <div class="col">
+    <h3>Simple authentication here! (username; password)</h3>
+    <EditForm Model="@model" FormName="login-form" OnSubmit="LoginAsync" >
+      <DataAnnotationsValidator />
+      <ValidationSummary />
+      <div class="mb-2">
+        <label for="name" class="form-label">Email</label>
+        <InputText @bind-Value="model.Email" name="name" type="email" class="form-control" />
+      </div>
+      <div class="mb-2">
+        <label for="password" class="form-label">Password</label>
+        <InputText @bind-Value="model.Password" name="password" type="password" min="3" max="20" class="form-control" />
+      </div>
+      <div class="mb-2">
+        <InputCheckbox @bind-Value="model.RememberMe" name="rememberme" class="form-check-inline" />
+        <label for="rememberme" class="form-label">Remenber Me</label>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+
+    </EditForm>
+  </div>
+</div>
+
+@code {
+  [SupplyParameterFromForm(FormName = "login-form")] private LoginDto model { get; set; } = new();
+  [CascadingParameter] public HttpContext context { get; set; } = default!;
+  [SupplyParameterFromQuery] public string returnUrl { get; set; } = "/";
+  protected override void OnInitialized()
+  {
+    if(context.User.Identity.IsAuthenticated==true)
+    {
+      NavManager.NavigateTo("/auth/profile", replace: true);
+    }
+    model = new();
+  }
+
+  async Task LoginAsync()
+  {
+    // TODO: validate input
+    ClaimsIdentity identity = new(model.ToClaims(), Utilities.authScheme);
+    ClaimsPrincipal principal = new(identity);
+    await context.SignInAsync(Utilities.authScheme, principal, new AuthenticationProperties
+      {
+        IsPersistent = model.RememberMe
+      });
+    NavigationManager.NavigateTo(returnUrl, replace: true);
+  }
+
+}

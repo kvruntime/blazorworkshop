@@ -1,0 +1,18 @@
+@page "/auth/profile"
+@attribute [Authorize]
+
+<div>
+  <AuthorizeView>
+    <Authorized>
+      <h2>User profile's page <span>
+          <NavLink class="btn btn-danger" href="/auth/logout">Logout</NavLink>
+        </span></h2>
+      <div>
+        <p><span>Name: </span>@context.User.Identity?.Name</p>
+        <p><span>Email: </span>@context.User.Identities.FirstOrDefault(c => c.NameClaimType == ClaimTypes.Email)</p>
+
+
+      </div>
+    </Authorized>
+  </AuthorizeView>
+</div>
