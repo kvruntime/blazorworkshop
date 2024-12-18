@@ -1,0 +1,26 @@
+@typeparam TItem
+<div class="">
+
+  @ListTemplate(
+    @:@{
+      foreach(var item in Items){
+      @ItemTemplate(item)
+}
+    }
+      )
+
+
+
+</div>
+
+@code {
+
+  [Parameter]
+  [EditorRequired]
+  public required RenderFragment<TItem> ItemTemplate { get; set; }
+  [Parameter]
+  [EditorRequired]
+  public required RenderFragment<RenderFragment> ListTemplate { get; set; }
+  [Parameter]
+  public IReadOnlyList<TItem> Items { get; set; } = default!;
+}

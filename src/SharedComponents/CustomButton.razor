@@ -1,0 +1,6 @@
+<button class="custom-button" @attributes=@Attributes>@Text</button>
+
+@code {
+  [Parameter][EditorRequired] public required string Text { get; set; }
+  [Parameter] public Dictionary<string, object> Attributes { get; set; }
+}

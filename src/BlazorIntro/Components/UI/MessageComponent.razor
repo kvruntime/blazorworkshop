@@ -1,0 +1,15 @@
+
+@if(show)
+{
+  <div class="alert alert-info">
+    <div>@Text</div>
+  </div>
+}
+
+@code{
+  bool show = true;
+  [Parameter][EditorRequired] public string Text { get; set; } = default!;
+
+  public void Hide(){ show = false;  StateHasChanged(); }
+  public void Show(){ show = true;  StateHasChanged(); }
+}

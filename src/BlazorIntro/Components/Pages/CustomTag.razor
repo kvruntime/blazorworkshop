@@ -1,0 +1,32 @@
+@page "/custom-tag"
+@rendermode InteractiveServer
+
+
+<section>
+  <div>
+    <h2>Custom Tag using attributes</h2>
+    <CustomForm class="alert alert-success " />
+  </div>
+
+  <div>
+    <h2>Toogle Message</h2>
+    <div class="btn-group">
+      <button class="btn btn-primary" @onpointerdown="@(()=>{message.Show();})">Show</button>
+      <button class="btn btn-danger" @onpointerdown="@(()=>{message.Hide();})">Hide</button>
+    </div>
+    <div>
+      <MessageComponent Text="Show some informations here..." @ref="message" />
+    </div>
+  </div>
+
+  <div>
+    <h2>Use custom-button button</h2>
+    <CustomButton Text="Simple button" />
+  </div>
+</section>
+
+
+
+@code {
+  MessageComponent message = new();
+}

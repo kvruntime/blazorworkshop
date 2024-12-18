@@ -1,0 +1,15 @@
+<div @attributes="@Attributes">
+  <label class="form-label">
+    Username
+    <input type="text" minlength="4" maxlength="10" required class="form-control" />
+  </label>
+  <div>
+    <button class=" btn btn-outline-success">Setup</button>
+  </div>
+</div>
+
+
+@code {
+  [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? Attributes { get; set; }
+
+}
